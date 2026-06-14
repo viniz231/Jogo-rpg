@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taverna dos Heróis — Registro de Missões</title>
+    <style>
+        /* ESTÉTERICA PREMIUM ULTRA-MINIMALISTA (Visual Obsidian / Linear) */
+        :root {
+            --bg: #030712;
+            --card: #0b1329;
+            --borda: #1f293d;
+            --ouro: #f59e0b;
+            --texto: #f3f4f6;
+            --texto-mutado: #9ca3af;
+            --codigo-bg: #020617;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--texto);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        /* CABEÇALHO */
+        header {
+            margin-bottom: 50px;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--ouro);
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        h1 {
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 16px;
+            color: #ffffff;
+        }
+
+        .subtitulo {
+            font-size: 1.15rem;
+            color: var(--texto-mutado);
+            max-width: 650px;
+            margin-bottom: 24px;
+        }
+
+        .btn-link {
+            font-size: 0.95rem;
+            color: #ffffff;
+            text-decoration: none;
+            border-bottom: 1px solid var(--ouro);
+            padding-bottom: 2px;
+            transition: color 0.2s;
+        }
+
+        .btn-link:hover {
+            color: var(--ouro);
+        }
+
+        /* SEÇÕES GRAVADAS */
+        section {
+            margin-top: 50px;
+            border-top: 1px solid var(--borda);
+            padding-top: 40px;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 18px;
+            color: #ffffff;
+        }
+
+        p {
+            color: var(--texto-mutado);
+            margin-bottom: 16px;
+            font-size: 0.98rem;
+        }
+
+        /* LINHA DE OBJETIVOS (CONTEXTO ACADÊMICO) */
+        .grid-objetivos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card-meta {
+            background-color: rgba(255,255,255,0.01);
+            border: 1px solid var(--borda);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .card-meta h3 {
+            font-size: 1.05rem;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        /* TABELA */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        th {
+            color: #ffffff;
+            text-align: left;
+            padding: 12px 8px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--borda);
+        }
+
+        td {
+            padding: 14px 8px;
+            color: var(--texto-mutado);
+            border-bottom: 1px solid var(--borda);
+        }
+
+        .file-name {
+            font-family: monospace;
+            color: var(--ouro);
+            font-weight: 600;
+        }
+
+        /* INTERFACE DO EXPLICADOR DE CÓDIGO */
+        .explicador-box {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            background-color: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 24px;
+        }
+
+        .abas-sidebar {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-right: 1px solid var(--borda);
+            padding: 16px 0;
+        }
+
+        .btn-aba {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: var(--texto-mutado);
+            text-align: left;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-family: monospace;
+            transition: all 0.2s;
+        }
+
+        .btn-aba:hover, .btn-aba.ativo {
+            color: #ffffff;
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .btn-aba.ativo {
+            border-left: 2px solid var(--ouro);
+            font-weight: bold;
+        }
+
+        .conteudo-painel {
+            padding: 30px;
+        }
+
+        .meta-info {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--borda);
+            padding-bottom: 16px;
+        }
+
+        .meta-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+            font-family: monospace;
+        }
+
+        /* QUADRO DIDÁTICO */
+        .caixa-didatica {
+            background-color: rgba(245, 158, 11, 0.04);
+            border-left: 2px solid var(--ouro);
+            padding: 18px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+        }
+
+        .caixa-didatica h4 {
+            font-size: 0.85rem;
+            color: var(--ouro);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .caixa-didatica p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: var(--texto);
+        }
+
+        .caixa-didatica ul {
+            margin-top: 12px;
+            padding-left: 18px;
+            color: var(--texto-mutado);
+            font-size: 0.9rem;
+        }
+
+        .caixa-didatica li {
+            margin-bottom: 6px;
+        }
+
+        /* CÓDIGO BRUTO */
+        pre {
+            background-color: var(--codigo-bg);
+            padding: 18px;
+            border-radius: 6px;
+            overflow-x: auto;
+            border: 1px solid var(--borda);
+        }
+
+        code {
+            font-family: "Fira Code", "Consolas", monospace;
+            font-size: 0.85rem;
+            color: #e2e8f0;
+        }
+
+        /* HIGHLIGHTERS */
+        .comentario { color: #52525b; font-style: italic; }
+        .chave { color: #f43f5e; }
+        .texto-str { color: #10b981; }
+        .nome-funcao { color: #38bdf8; }
+
+        footer {
+            margin-top: 80px;
+            border-top: 1px solid var(--borda);
+            padding-top: 24px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--texto-mutado);
+        }
+
+        @media (max-width: 768px) {
+            .explicador-box { grid-template-columns: 1fr; }
+            .abas-sidebar { display: flex; overflow-x: auto; padding: 8px; border-right: none; border-bottom: 1px solid var(--borda); }
+            .btn-aba { width: auto; padding: 8px 16px; }
+            .btn-aba.ativo { border-left: none; border-bottom: 2px solid var(--ouro); }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- CABEÇALHO -->
+        <header>
+            <span class="badge">Relatório Técnico de Desenvolvimento</span>
+            <h1>Taverna dos Heróis</h1>
+            <p class="subtitulo">Resolução prática do sistema de gerenciamento persistente para o Registro de Missões da Guilda.</p>
+            <a href="https://playabl.ai/en/@elohinvinicius9/taverna-dos-her-is-registro-de-miss-es-o-melhor--6a2c8dbeae15ea7d4fa262c4" target="_blank" class="btn-link">Acessar Simulação no Playabl.ai →</a>
+        </header>
+
+        <!-- SEÇÃO: ESCOPO & OBJETIVO DO JOGO -->
+        <section id="objetivo">
+            <h2>Objetivo do Projeto</h2>
+            <p>O software foi desenvolvido para cumprir os requisitos do <strong>Desafio 10 (Quest Log com Arquivos)</strong>. A premissa central é simular uma guilda medieval onde os heróis aceitam contratos no mural e o sistema precisa garantir a segurança e a integridade desses registros.</p>
+            
+            <div class="grid-objetivos">
+                <div class="card-meta">
+                    <h3>🎯 O Desafio Prático</h3>
+                    <p style="font-size: 0.9rem; margin: 0;">Criar um gerenciador capaz de manipular um vetor de structs (título, moedas de recompensa e identificadores de status: 0 para Disponível, 1 para Em Andamento e 2 para Concluída).</p>
+                </div>
+                <div class="card-meta">
+                    <h3>💾 Persistência de Dados</h3>
+                    <p style="font-size: 0.9rem; margin: 0;">Garantir que as informações de progresso sejam salvas em arquivos locais de texto ao encerrar a execução, permitindo o recarregamento automático no próximo início.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESTRUTURA DE ARQUIVOS -->
+        <section id="arquitetura">
+            <h2>Mapeamento Arquitetural</h2>
+            <p>A separação de responsabilidades foi dividida de maneira modular para organizar a lógica de processamento e a interface do usuário:</p>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Responsabilidade e Função Técnica</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="file-name">src/game/game.js</td>
+                        <td>Núcleo de processamento. Gerencia as alterações nos vetores de missões e controla os status.</td>
+                    </tr>
+                    <tr>
+                        <td class="file-name">src/game/main.js</td>
+                        <td>Camada de controle I/O. Renderiza as informações visuais e escuta as ações do usuário.</td>
+                    </tr>
+                    <tr>
+                        <td class="file-name">src/game/tweaks.json</td>
+                        <td>Configuração externa e dados de inicialização segura das missões padrão da guilda.</td>
+                    </tr>
+                    <tr>
+                        <td class="file-name">src/game/styles.css</td>
+                        <td>Visualizador gráfico simplificado e estilização escura do terminal de texto.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- EXPLICADOR INTERATIVO -->
+        <section id="codigos">
+            <h2>Análise de Código Detalhada</h2>
+            <p>Escolha um dos arquivos abaixo para entender detalhadamente como estruturamos a resolução do desafio:</p>
+
+            <div class="explicador-box">
+                <!-- Abas Laterais -->
+                <nav class="abas-sidebar">
+                    <button class="btn-aba ativo" onclick="trocarAba('game', this)">game.js</button>
+                    <button class="btn-aba" onclick="trocarAba('main', this)">main.js</button>
+                    <button class="btn-aba" onclick="trocarAba('tweaks', this)">tweaks.json</button>
+                    <button class="btn-aba" onclick="trocarAba('styles', this)">styles.css</button>
+                </nav>
+
+                <!-- Painel Explicativo -->
+                <main class="conteudo-painel">
+                    <div class="meta-info">
+                        <h3 id="txt-titulo">src/game/game.js</h3>
+                    </div>
+
+                    <!-- Caixa Didática para leitura de qualquer membro do grupo -->
+                    <div class="caixa-didatica">
+                        <h4></h4>
+                        <p id="txt-explicacao">Este arquivo controla o estado do jogo. Ele cria um objeto para lembrar o ouro e o histórico do herói, e usa uma estrutura de árvore (nós) para conectar as salas do RPG. Quando o jogador faz uma escolha, a função muda o nó atual e avança na história.</p>
+                        <ul id="txt-pontos">
+                            <li><strong>Estado do Jogo:</strong> Memória viva que armazena o progresso atual do usuário.</li>
+                            <li><strong>Árvore Narrativa:</strong> Onde ficam salvas todas as salas, opções e textos do RPG.</li>
+                        </ul>
+                    </div>
+
+                    <pre><code id="txt-codigo"></code></pre>
+                </main>
+            </div>
+        </section>
+
+        <footer>
+            <p>Projeto Desenvolvido — Desafio 10: Quest Log da Guilda.</p>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT: BANCO DE DADOS DIDÁTICO -->
+    <script>
+        const dadosProjetos = {
+            game: {
+                titulo: "src/game/game.js",
+                explicacao: "Este script lida diretamente com as regras do Quest Log solicitadas pela professora. Ele monitora a estrutura dos dados das missões organizadas em vetores e as funções de transição da história. É o responsável por atualizar o status das missões (0, 1 ou 2) à medida que o herói progride.",
+                pontos: [
+                    "<strong>Vetor de Structs (Simulado):</strong> Organiza o identificador único, título da missão, recompensa e os status numéricos de controle de progresso.",
+                    "<strong>Navegação Fluida:</strong> A função 'irParaCenario' atualiza o histórico do jogador e invoca o atualizador da interface contido no main.js para modificar os dados exibidos."
+                ],
+                codigo: `<span class="comentario">// 1. Simulação da estrutura (Struct) de controle e status das Quests</span>
+<span class="chave">const</span> QuestLog = [
+    { id: 1, titulo: <span class="texto-str">"Limpar os porões da guilda"</span>, recompensa: 5, status: 0 }, <span class="comentario">// 0 = Disponível</span>
+    { id: 2, titulo: <span class="texto-str">"Caçar a criatura nos arredores"</span>, recompensa: 50, status: 0 }
+];
+
+<span class="chave">const</span> EstadoDoJogo = {
+    jogador: { ouro: 10, historico: [] },
+
+    <span class="comentario">// 2. Função de transição da árvore de decisão</span>
+    <span class="nome-funcao">irParaCenario</span>(idCenario) {
+        <span class="chave">const</span> cenarioAlvo = ArvoreNarrativa[idCenario];
+        <span class="chave">if</span> (!cenarioAlvo) <span class="chave">return</span>;
+
+        <span class="chave">this</span>.jogador.historico.push(idCenario);
+        
+        <span class="comentario">// Sincroniza e envia a atualização para a camada visual</span>
+        <span class="nome-funcao">atualizarInterfaceGrafica</span>(cenarioAlvo.texto, cenarioAlvo.opcoes);
+    }
+};
+
+<span class="chave">const</span> ArvoreNarrativa = {
+    entrada_taverna: {
+        texto: <span class="texto-str">"Você está na Taverna dos Heróis. O mural de contratos está à frente."</span>,
+        opcoes: [
+            { texto: <span class="texto-str">"Olhar mural de missões"</span>, destino: <span class="texto-str">"mural_guilda"</span> }
+        ]
+    }
+};`
+            },
+            main: {
+                titulo: "src/game/main.js",
+                explicacao: "O script de entrada cuida das rotinas de Entrada e Saída (I/O). Ele captura o carregamento da aplicação web e limpa a tela antiga, gerando em tempo real novos botões e parágrafos correspondentes ao cenário em que o herói se encontra.",
+                pontos: [
+                    "<strong>Inicialização do Sistema:</strong> Aguarda o carregamento completo da janela gráfica (DOM) para carregar o cenário inicial seguro da taverna.",
+                    "<strong>Injeção de Elementos Dinâmicos:</strong> Limpa a memória visual anterior e usa laços de repetição (forEach) para desenhar os novos botões dinamicamente."
+                ],
+                codigo: `<span class="chave">import</span> { EstadoDoJogo } <span class="chave">from</span> <span class="texto-str">'./game.js'</span>;
+
+<span class="comentario">// Executa imediatamente após a interface gráfica estar pronta</span>
+<span class="keyword">document</span>.<span class="nome-funcao">addEventListener</span>(<span class="texto-str">"DOMContentLoaded"</span>, () => {
+    <span class="comentario">// Inicializa o jogo posicionando o herói na entrada</span>
+    EstadoDoJogo.<span class="nome-funcao">irParaCenario</span>(<span class="texto-str">"entrada_taverna"</span>);
+});
+
+<span class="comentario">// Função encarregada de redesenhar os componentes gráficos na página</span>
+<span class="chave">function</span> <span class="nome-funcao">atualizarInterfaceGrafica</span>(textoNarrativo, opcoes) {
+    <span class="chave">const</span> containerTexto = <span class="keyword">document</span>.<span class="nome-funcao">getElementById</span>(<span class="texto-str">"caixa-texto"</span>);
+    <span class="chave">const</span> containerBotoes = <span class="keyword">document</span>.<span class="nome-funcao">getElementById</span>(<span class="texto-str">"container-botoes"</span>);
+
+    containerTexto.innerHTML = \`&lt;p&gt;\${textoNarrativo}&lt;/p&gt;\`;
+    containerBotoes.innerHTML = <span class="texto-str">""</span>; <span class="comentario">// Reseta os botões da rodada anterior</span>
+
+    <span class="comentario">// Mapeia as opções e gera botões de ação dinamicamente</span>
+    opcoes.<span class="nome-funcao">forEach</span>(opcao => {
+        <span class="chave">const</span> botao = <span class="keyword">document</span>.<span class="nome-funcao">createElement</span>(<span class="texto-str">"button"</span>);
+        botao.innerText = opacity.texto;
+        botao.onclick = () => EstadoDoJogo.<span class="nome-funcao">irParaCenario</span>(opcao.destino);
+        containerBotoes.<span class="nome-funcao">appendChild</span>(botao);
+    });
+}`
+            },
+            tweaks: {
+                titulo: "src/game/tweaks.json",
+                explicacao: "Este arquivo funciona como o banco de armazenamento de dados estáticos. Para atender o princípio de salvar dados de configuração de forma limpa, isolamos os parâmetros de IA e bônus de ouro aqui, mantendo-os apartados da programação principal em JavaScript.",
+                pontos: [
+                    "<strong>Configurações Seguras:</strong> Permite alterar valores do jogo (como a taxa de moedas recebidas pelo herói) sem tocar nos scripts lógicos.",
+                    "<strong>Abstração de Prompt:</strong> Centraliza a instrução de contexto fornecida ao mestre inteligente do RPG."
+                ],
+                codigo: `{
+  <span class="chave">"nomeDoDesafio"</span>: <span class="texto-str">"Desafio 10: Quest Log da Guilda"</span>,
+  <span class="chave">"versaoDoSistema"</span>: <span class="texto-str">"1.0.0"</span>,
+  <span class="chave">"multiplicadorRecompensa"</span>: 1.5,
+  <span class="chave">"iaConfig"</span>: {
+    <span class="chave">"temperatura"</span>: 0.7,
+    <span class="chave">"contextoGlobal"</span>: <span class="texto-str">"Aja como o sistema de registro automático de missões da corte real."</span>
+  }
+}`
+            },
+            styles: {
+                titulo: "src/game/styles.css",
+                explicacao: "O arquivo CSS aplica os fundamentos de design e imersão visual da taverna. Ele simula uma interface de terminal de texto escura com realces sutis em dourado, reduzindo o cansaço visual e destacando os botões de escolha.",
+                pontos: [
+                    "<strong>Paleta de Cores Coesa:</strong> Mantém o tema focado no preto e azul escuro para dar a sensação de um console de desenvolvimento.",
+                    "<strong>Microinterações Visuais:</strong> Gerencia o efeito hover, invertendo as cores de forma suave quando o mouse passa sobre os botões."
+                ],
+                codigo: `<span class="comentario">/* Área de exibição de textos narrativos emitidos pela guilda */</span>
+<span class="nome-funcao">.caixa-texto-rpg</span> {
+    <span class="chave">background-color</span>: #0f172a;
+    <span class="chave">border-left</span>: 3px solid #f59e0b;
+    <span class="chave">padding</span>: 20px;
+    <span class="chave">color</span>: #f8fafc;
+}
+
+<span class="comentario">/* Botões interativos de ação gerados em tempo de execução */</span>
+<span class="nome-funcao">.btn-opcao</span> {
+    <span class="chave">background-color</span>: #1e293b;
+    <span class="chave">color</span>: #f59e0b;
+    <span class="chave">border</span>: 1px solid #334155;
+    <span class="chave">cursor</span>: pointer;
+    <span class="chave">transition</span>: background 0.2s ease;
+}
+
+<span class="nome-funcao">.btn-opcao:hover</span> {
+    <span class="chave">background-color</span>: #f59e0b;
+    <span class="chave">color</span>: #000000;
+}`
+            }
+        };
+
+        function trocarAba(chave, elemento) {
+            document.querySelectorAll('.btn-aba').forEach(b => b.classList.remove('ativo'));
+            elemento.classList.add('ativo');
+
+            const dados = dadosProjetos[chave];
+            document.getElementById('txt-titulo').innerText = dados.titulo;
+            document.getElementById('txt-explicacao').innerText = dados.explicacao;
+            document.getElementById('txt-codigo').innerHTML = dados.codigo;
+
+            const ul = document.getElementById('txt-pontos');
+            ul.innerHTML = "";
+            dados.pontos.forEach(ponto => {
+                const li = document.createElement('li');
+                li.innerHTML = ponto;
+                ul.appendChild(li);
+            });
+        }
+
+        // Inicia o sistema preenchendo automaticamente com os dados do game.js
+        document.addEventListener("DOMContentLoaded", () => {
+            trocarAba('game', document.querySelector('.btn-aba'));
+        });
+    </script>
+</body>
+</html>
